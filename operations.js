@@ -1,39 +1,27 @@
 //four methods to insert, find, remove, update documents
 //each method will be exported
 
-const assert = require('assert').strict; //this is error checking
+//const assert = require('assert').strict; //this is error checking - no longer need with promise 
 
-exports.insertDocument = (db, document, collection, callback) => {
+exports.insertDocument = (db, document, collection) => {
     const coll = db.collection(collection);//we expect this to be a string
     // we can now use the coll variable to interact with the selected collection
-    coll.insertOne(document, (err, result) => {
-        assert.strictEqual(err, null);
-        callback(result); //defined elsewhere
-    }); //from the MongoDB driver
+    return coll.insertOne(document); //MongoDB driver natively accepts promises to more callback for error handling with the return 
 };
-exports.findDocuments = (db, collection, callback) => {
+exports.findDocuments = (db, collection) => {
     const coll = db.collection(collection);//we expect this to be a string
     // we can now use the coll variable to interact with the selected collection
-    coll.find().toArray((err, docs) => {
-        assert.strictEqual(err, null);
-        callback(docs);
-    });
+    return coll.find().toArray();
 };
 
-exports.removeDocument = (db, document, collection, callback) => {
+exports.removeDocument = (db, document, collection) => {
     const coll = db.collection(collection);//we expect this to be a string
     // we can now use the coll variable to interact with the selected collection
-    coll.deleteOne(document, (err, result) => {
-        assert.strictEqual(err, null);
-        callback(result);
-    });
+    return coll.deleteOne(document);
 };
 
-exports.updateDocument = (db, document, update, collection, callback) => {
+exports.updateDocument = (db, document, update, collection) => {
     const coll = db.collection(collection);//we expect this to be a string
     // we can now use the coll variable to interact with the selected collection
-    coll.updateOne(document, { $set: update }, null, (err, result) => {
-        assert.strictEqual(err, null);
-        callback(result);  
-    });
+    return coll.updateOne(document, { $set: update }, null);
 };
