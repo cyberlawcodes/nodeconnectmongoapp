@@ -12,12 +12,10 @@ const connect = mongoose.connect(url, {
 connect.then(() => {//connect method returns a promise
     console.log('Connected correctly to server');
 
-    const newCampsite = new Campsite({
+    Campsite.create({//.create replaces Campsite = newCampsite (model) returns a promise that resolves to a new document - this is the start of the promise chain
         name: 'React Lake Campground',
         description: 'test'
-    });
-
-    newCampsite.save()//promise
+    })
     .then(campsite => {
         console.log(campsite);//if it worked
         return Campsite.find();//will look for all docs based on this campsite model
